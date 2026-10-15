@@ -28,6 +28,27 @@ import jp.co.sss.lms.util.TrainingTime;
  * 
  * @author 東京ITスクール
  */
+/**
+ * 
+ */
+/**
+ * 
+ */
+/**
+ * 
+ */
+/**
+ * 
+ */
+/**
+ * 
+ */
+/**
+ * 
+ */
+/**
+ * 
+ */
 @Service
 public class StudentAttendanceService {
 
@@ -332,6 +353,28 @@ public class StudentAttendanceService {
 		}
 		// 完了メッセージ
 		return messageUtil.getMessage(Constants.PROP_KEY_ATTENDANCE_UPDATE_NOTICE);
+	}
+
+	/**
+	 * 勤怠一覧情報取得
+	 * 
+	 * @author 岩本 知寛 – Task.25
+	 * @return [未入力日が0より大きい場合]:true,そうでない場合はfalseを戻す。
+	 * @throws ParseException
+	 */
+	public Boolean notEnterCheck() throws ParseException {
+		//# 概要 今日より前の過去日に、未入力の勤怠があるかどうかを判定する。
+		//
+		//# 処理 
+		// * 今日の日付を取得する。
+		//
+		// *tStudentAttendanceMapper.notEnterCount を呼び出し、未入力件数を取得する。
+		//
+		// *件数が 0 より大きければ true、そうでなければ false を戻す。
+		
+		
+
+		return true;
 	}
 
 }
