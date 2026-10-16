@@ -356,25 +356,22 @@ public class StudentAttendanceService {
 	}
 
 	/**
-	 * 勤怠一覧情報取得
+	 * 未入力件数取得
 	 * 
 	 * @author 岩本 知寛 – Task.25
-	 * @return [未入力日が0より大きい場合]:true,そうでない場合はfalseを戻す。
+	 * @return 未入力が1件以上であれば True、それ以外は False
 	 * @throws ParseException
 	 */
 	public Boolean notEnterCheck() throws ParseException {
-		//# 概要 今日より前の過去日に、未入力の勤怠があるかどうかを判定する。
-		//
-		//# 処理 
-		// * 今日の日付を取得する。
-		//
-		// *tStudentAttendanceMapper.notEnterCount を呼び出し、未入力件数を取得する。
-		//
-		// *件数が 0 より大きければ true、そうでなければ false を戻す。
-		
-		
+		// 本日の日付取得
+		Date today = attendanceUtil.getTrainingDate();
 
-		return true;
+		int zero_records = 0;
+
+		// DBからデータ未入力件数を抽出
+		int getCount = tStudentAttendanceMapper.notEnterCount(
+				loginUserDto.getUserId(), Constants.DB_FLG_FALSE, today);
+		return zero_records < getCount ? true : false;
 	}
 
 }

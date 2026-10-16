@@ -40,6 +40,20 @@
 		ORDER BY t2.date ASC
 	</select>
 
+	<!-- 岩本知寛 - Task.25 -->
+	<select id="notEnterCount" resultType="Integer">
+		SELECT count(*)
+		FROM t_student_attendance
+		WHERE lms_user_id = #{lmsUserId}
+			AND delete_flg = #{deleteFlg}
+			AND training_date &lt; #{trainingDate}
+			AND status != 1
+			AND ( training_start_time = ''
+				OR training_end_time = ''
+				OR training_start_time IS NULL
+				OR training_end_time IS NULL)
+	</select>
+
 	<insert id="insert" parameterType="jp.co.sss.lms.entity.TStudentAttendance" useGeneratedKeys="true" keyProperty="studentAttendanceId">
 		INSERT INTO t_student_attendance 
 		(
