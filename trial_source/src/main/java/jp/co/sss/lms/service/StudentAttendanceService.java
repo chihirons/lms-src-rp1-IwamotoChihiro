@@ -22,6 +22,7 @@ import jp.co.sss.lms.util.DateUtil;
 import jp.co.sss.lms.util.LoginUserUtil;
 import jp.co.sss.lms.util.MessageUtil;
 import jp.co.sss.lms.util.TrainingTime;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 勤怠情報（受講生入力）サービス
@@ -49,6 +50,7 @@ import jp.co.sss.lms.util.TrainingTime;
 /**
  * 
  */
+@Slf4j
 @Service
 public class StudentAttendanceService {
 
@@ -240,7 +242,14 @@ public class StudentAttendanceService {
 		attendanceForm.setUserName(loginUserDto.getUserName());
 		attendanceForm.setLeaveFlg(loginUserDto.getLeaveFlg());
 		attendanceForm.setBlankTimes(attendanceUtil.setBlankTime());
-
+		
+		// 岩本知寛 - Task.26
+		// 勤務時間の時/分マッピングを追加登録
+		attendanceForm.setTrainingStartTimeHour(attendanceUtil.getHourMap());
+		attendanceForm.setTrainingStartTimeMinute(attendanceUtil.getMinuteMap());
+		attendanceForm.setTrainingEndTimeHour(attendanceUtil.getHourMap());
+		attendanceForm.setTrainingEndTimeMinute(attendanceUtil.getMinuteMap());
+		
 		// 途中退校している場合のみ設定
 		if (loginUserDto.getLeaveDate() != null) {
 			attendanceForm
@@ -259,6 +268,30 @@ public class StudentAttendanceService {
 			dailyAttendanceForm
 					.setTrainingStartTime(attendanceManagementDto.getTrainingStartTime());
 			dailyAttendanceForm.setTrainingEndTime(attendanceManagementDto.getTrainingEndTime());
+			
+			// 岩本知寛 - Task.26
+			String timeString = attendanceManagementDto.getTrainingStartTime();//"09:15"
+			Integer startHour=Integer.parseInt(timeString.substring(0, 2));//9
+			dailyAttendanceForm.setTrainingStartTimeHour(startHour);
+//			出勤時間（時）＝勤怠管理画面用DTOリスト[n]．勤怠Utilを使用して出勤時間の時間を抜き出す
+//			出勤時間（分）＝勤怠管理画面用DTOリスト[n]．勤怠Utilを使用して出勤時間の分を抜き出す
+//			退勤時間（時）＝勤怠管理画面用DTOリスト[n]．勤怠Utilを使用して退勤時間の時間を抜き出す
+//			退勤時間（分）＝勤怠管理画面用DTOリスト[n]．勤怠Utilを使用して退勤時間の分を抜き出す
+
+//			---
+//			 * DailyAttendanceForm を作成し、DTOの各項目（時刻、ステータス、備考、中抜け時間等）をコピーする。
+//			>>>【追加】時刻を「時」「分」に分割してセットし、表示用の日付文字列を生成してセットする。
+	//
+//			# 加工の例
+//			"09:15" -> 9,15//時間と分に分割しフォームにセットする 
+	//
+//			timeString=attendanceManagementDto.getTrainingStartTime()//"09:15"
+//			startHour=Integer.parseInt(timeString.substring(0, 2));//9
+//			dailyAttendanceForm.setTrainingStartTimeHour(startHour);
+//			//開始分、退勤時、退勤分も同様に処理する
+			
+			
+			
 			if (attendanceManagementDto.getBlankTime() != null) {
 				dailyAttendanceForm.setBlankTime(attendanceManagementDto.getBlankTime());
 				dailyAttendanceForm.setBlankTimeValue(String.valueOf(
@@ -371,7 +404,27 @@ public class StudentAttendanceService {
 		// DBからデータ未入力件数を抽出
 		int getCount = tStudentAttendanceMapper.notEnterCount(
 				loginUserDto.getUserId(), Constants.DB_FLG_FALSE, today);
+		log.info("getCount = " + getCount);
 		return zero_records < getCount ? true : false;
 	}
+	
+	
+	/**
+	 * 未入力件数取得
+	 * 
+	 * @author 岩本 知寛 – Task.26
+	 * @return 
+	 * @throws 
+	 */
 
+//	Task.26 入力された出退勤の{時間}{分}をhh:mm形式に変換し、AttendanceFormにセットする
+//
+//	# 概要 フォーム内の「時」と「分」の入力を、「hh:mm」形式の文字列に変換してセットする。
+//
+//	# 処理 
+//	[loop] DailyAttendanceForm : フォーム内のリスト 
+//	    * [if 出勤の「時」「分」が共に入力されている場合] %02d:%02d 形式で trainingStartTime にセットする。 
+//	    * [if 退勤の「時」「分」が共に入力されている場合] %02d:%02d 形式で trainingEndTime にセットする。
+//	[loop end]
+	
 }
