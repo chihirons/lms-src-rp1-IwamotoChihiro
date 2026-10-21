@@ -166,47 +166,22 @@ public class AttendanceUtil {
 	 * 時間(時)の切り出し
 	 * 
 	 * @author 岩本 知寛 – Task.26
-	 * @param  trainingTime  開始時刻or終了時刻
+	 * @param  timeString  開始時刻or終了時刻
 	 * @return 出退勤時間(時間)
 	 */
-	public Integer getHour(String trainingTime){
-		return null;
+	public Integer getHour(String timeString){
+		return Integer.parseInt(timeString.substring(0, 2));
 	}
 	
 	/**
 	 * 時間(分)の切り出し
 	 * 
 	 * @author 岩本 知寛 – Task.26
-	 * @param  trainingTime  開始時刻or終了時刻
+	 * @param  timeString  開始時刻or終了時刻
 	 * @return 出退勤時間(分)
 	 */
-	public Integer getMinute(String trainingTime){
-		return null;
-	}
-	
-	/**
-	 * 受講時間数を算出
-	 * 
-	 * @author 岩本 知寛 – Task.26
-	 * @param  trainingStartTime 開始時刻
-     * @param  trainingEndTime   終了時刻
-	 * @return 受講トータル時間
-	 */
-	public TrainingTime calcJukoTime(
-			TrainingTime trainingStartTime
-			,TrainingTime trainingEndTime){
-		return null;
-	}
-	
-	/**
-	 * 中抜け時間(文字列)を数字に変換
-	 * 
-	 * @author 岩本 知寛 – Task.26
-	 * @param  blankTimeValue 中抜け時間
-	 * @return 中抜け時間
-	 */
-	public Integer reverseBlankTime(String blankTimeValue){
-		return null;
+	public Integer getMinute(String timeString){
+		return Integer.parseInt(timeString.substring(3, 5));
 	}
 	
 	/**

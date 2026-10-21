@@ -1,7 +1,6 @@
 package jp.co.sss.lms.controller;
 
 import java.text.ParseException;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +14,7 @@ import jp.co.sss.lms.dto.AttendanceManagementDto;
 import jp.co.sss.lms.dto.LoginUserDto;
 import jp.co.sss.lms.form.AttendanceForm;
 import jp.co.sss.lms.service.StudentAttendanceService;
-import jp.co.sss.lms.util.AttendanceUtil;
 import jp.co.sss.lms.util.Constants;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 勤怠管理コントローラ
@@ -26,19 +23,12 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Controller
 @RequestMapping("/attendance")
-
-//デバッグ用 <=============あとで削除する
-@Slf4j
 public class AttendanceController {
 
 	@Autowired
 	private StudentAttendanceService studentAttendanceService;
 	@Autowired
 	private LoginUserDto loginUserDto;
-
-	//デバッグ用 <=============あとで削除する
-	@Autowired
-	private AttendanceUtil attendanceUtil;
 	
 	/**
 	 * 勤怠管理画面 初期表示
@@ -129,13 +119,6 @@ public class AttendanceController {
 		AttendanceForm attendanceForm = studentAttendanceService
 				.setAttendanceForm(attendanceManagementDtoList);
 		model.addAttribute("attendanceForm", attendanceForm);
-		
-		//デバッグ用 <=============あとで削除する
-		LinkedHashMap<Integer, String> utilcheck_h = attendanceUtil.getHourMap();
-		log.info(utilcheck_h.toString());
-		LinkedHashMap<Integer, String> utilcheck_m = attendanceUtil.getMinuteMap();
-		log.info(utilcheck_m.toString());
-
 		return "attendance/update";
 	}
 
@@ -151,6 +134,10 @@ public class AttendanceController {
 	@RequestMapping(path = "/update", params = "complete", method = RequestMethod.POST)
 	public String complete(AttendanceForm attendanceForm, Model model, BindingResult result)
 			throws ParseException {
+		
+		// 岩本知寛 - Task.26
+		// 出勤／退勤時間をhh:mm形式に設定
+		studentAttendanceService.formatConversion(attendanceForm);
 
 		// 更新
 		String message = studentAttendanceService.update(attendanceForm);
