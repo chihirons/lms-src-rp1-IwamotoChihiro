@@ -33,13 +33,8 @@ public class AttendanceForm {
 	private List<DailyAttendanceForm> attendanceList;
 	
 	// 岩本知寛 - Task.26
-	/** 出勤時間[時](プルダウン) */
-	private LinkedHashMap<Integer, String> trainingStartTimeHour;
-	/** 出勤時間[分](プルダウン) */
-	private LinkedHashMap<Integer, String> trainingStartTimeMinute;
-	/** 退勤時間[時](プルダウン) */
-	private LinkedHashMap<Integer, String> trainingEndTimeHour;
-	/** 退勤時間[分](プルダウン) */
-	private LinkedHashMap<Integer, String> trainingEndTimeMinute;
-
+	/** 出退勤時間[時](プルダウン) */
+	private LinkedHashMap<Integer, String> trainingTimeHours;
+	/** 出退勤時間[分](プルダウン) */
+	private LinkedHashMap<Integer, String> trainingTimeMinutes;
 }
