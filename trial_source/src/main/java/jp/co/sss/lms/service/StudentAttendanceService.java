@@ -243,8 +243,8 @@ public class StudentAttendanceService {
 		
 		// 岩本知寛 - Task.26
 		// 勤務時間の時/分マッピングを追加登録
-		attendanceForm.setTrainingTimeHours(attendanceUtil.getHourMap());
-		attendanceForm.setTrainingTimeMinutes(attendanceUtil.getMinuteMap());
+		attendanceForm.setHourMap(attendanceUtil.getHourMap());
+		attendanceForm.setMinuteMap(attendanceUtil.getMinuteMap());
 		
 		// 途中退校している場合のみ設定
 		if (loginUserDto.getLeaveDate() != null) {
