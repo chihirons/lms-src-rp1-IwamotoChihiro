@@ -391,12 +391,12 @@ public class StudentAttendanceService {
 		// 本日の日付取得
 		Date today = attendanceUtil.getTrainingDate();
 
-		int zero_records = 0;
+		int ZERO_RECORDS = 0;
 
 		// DBからデータ未入力件数を抽出
 		int getCount = tStudentAttendanceMapper.notEnterCount(
 				loginUserDto.getUserId(), Constants.DB_FLG_FALSE, today);
-		return zero_records < getCount ? true : false;
+		return ZERO_RECORDS < getCount ? true : false;
 	}
 	
 	
