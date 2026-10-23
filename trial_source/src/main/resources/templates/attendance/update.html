@@ -26,10 +26,10 @@
 					<thead>
 						<tr>
 							<th class="w140">日付</th>
-							<th class="w300">コース内容</th>
+							<th class="w300"colspan="2">コース内容</th>
 							<!-- 岩本知寛 - Task.26 -->
-							<th class="w180" colspan="4">出勤</th>
-							<th class="w180" colspan="4">退勤</th>
+							<th class="w180" colspan="3">出勤</th>
+							<th class="w180" colspan="3">退勤</th>
 							<th class="w80">中抜け時間</th>
 							<th class="w70">ステータス</th>
 							<th class="w240">備考</th>
@@ -48,42 +48,40 @@
 								</th:block>
 								<td class="w140">[[${dailyAttendanceForm.dispTrainingDate}]]</td>
 								<td class="w300">[[${dailyAttendanceForm.sectionName}]]</td>
-								<!-- 岩本知寛 - Task.26 -->
-								<td>
-									<td class="w70">
-										<select th:name="|attendanceList[${stat.index}].trainingStartTimeHour|" class="form-control">
-											<option th:each="trainingStartTimeHour : ${attendanceForm.hourMap}" 
-												th:value="${trainingStartTimeHour.key}" th:inlne="text" class="form-control" 
-												th:selected="${trainingStartTimeHour.key == dailyAttendanceForm.trainingStartTimeHour}">[[${trainingStartTimeHour.value}]]</option>
-										</select>
-									</td>
-									<td>:</td>
-									<td class="w70">
-										<select th:name="|attendanceList[${stat.index}].trainingStartTimeMinute|" class="form-control">
-											<option th:each="trainingStartTimeMinute : ${attendanceForm.minuteMap}" 
-												th:value="${trainingStartTimeMinute.key}" th:inlne="text" class="form-control" 
-												th:selected="${trainingStartTimeMinute.key == dailyAttendanceForm.trainingStartTimeMinute}">[[${trainingStartTimeMinute.value}]]</option>
-										</select>
-									</td>
+								<!-- 岩本知寛 - Task.28 -->
+								<td class="w60"><input type="button" class="btn btn-success default-button" value="定時" th:onclick="|regularTime(${stat.index})|" /></td>
+								<!-- 岩本知寛 - Task.26 修正開始-->
+								<td class="w80">
+									<select th:name="|attendanceList[${stat.index}].trainingStartTimeHour|" class="form-control">
+										<option th:each="trainingStartTimeHour : ${attendanceForm.hourMap}" 
+											th:value="${trainingStartTimeHour.key}" th:inlne="text" class="form-control" 
+											th:selected="${trainingStartTimeHour.key == dailyAttendanceForm.trainingStartTimeHour}">[[${trainingStartTimeHour.value}]]</option>
+									</select>
 								</td>
-								<!-- 岩本知寛 - Task.26 -->
-								<td>
-									<td class="w70">
-										<select th:name="|attendanceList[${stat.index}].trainingEndTimeHour|" class="form-control">
-											<option th:each="trainingEndTimeHour : ${attendanceForm.hourMap}" 
-												th:value="${trainingEndTimeHour.key}" th:inlne="text" class="form-control" 
-												th:selected="${trainingEndTimeHour.key == dailyAttendanceForm.trainingEndTimeHour}">[[${trainingEndTimeHour.value}]]</option>
-										</select>
-									</td>
-									<td>:</td>
-									<td class="w70">
-										<select th:name="|attendanceList[${stat.index}].trainingEndTimeMinute|" class="form-control">
-											<option th:each="trainingEndTimeMinute : ${attendanceForm.minuteMap}" 
-												th:value="${trainingEndTimeMinute.key}" th:inlne="text" class="form-control" 
-												th:selected="${trainingEndTimeMinute.key == dailyAttendanceForm.trainingEndTimeMinute}">[[${trainingEndTimeMinute.value}]]</option>
-										</select>
-									</td>
+								<td>:</td>
+								<td class="w80">
+									<select th:name="|attendanceList[${stat.index}].trainingStartTimeMinute|" class="form-control">
+										<option th:each="trainingStartTimeMinute : ${attendanceForm.minuteMap}" 
+											th:value="${trainingStartTimeMinute.key}" th:inlne="text" class="form-control" 
+											th:selected="${trainingStartTimeMinute.key == dailyAttendanceForm.trainingStartTimeMinute}">[[${trainingStartTimeMinute.value}]]</option>
+									</select>
 								</td>
+								<td class="w80">
+									<select th:name="|attendanceList[${stat.index}].trainingEndTimeHour|" class="form-control">
+										<option th:each="trainingEndTimeHour : ${attendanceForm.hourMap}" 
+											th:value="${trainingEndTimeHour.key}" th:inlne="text" class="form-control" 
+											th:selected="${trainingEndTimeHour.key == dailyAttendanceForm.trainingEndTimeHour}">[[${trainingEndTimeHour.value}]]</option>
+									</select>
+								</td>
+								<td>:</td>
+								<td class="w80">
+									<select th:name="|attendanceList[${stat.index}].trainingEndTimeMinute|" class="form-control">
+										<option th:each="trainingEndTimeMinute : ${attendanceForm.minuteMap}" 
+											th:value="${trainingEndTimeMinute.key}" th:inlne="text" class="form-control" 
+											th:selected="${trainingEndTimeMinute.key == dailyAttendanceForm.trainingEndTimeMinute}">[[${trainingEndTimeMinute.value}]]</option>
+									</select>
+								</td>
+								<!-- 岩本知寛 - Task.26 修正終了-->
 								<td class="w80">
 									<select th:name="|attendanceList[${stat.index}].blankTime|" class="form-control">
 										<option th:each="blankTime : ${attendanceForm.blankTimes}" th:value="${blankTime.key}" th:inlne="text" class="form-control" 
@@ -112,6 +110,25 @@
 			</form>
 		</div>
 	</div>
+	<!-- 岩本知寛 - Task.28 -->
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		
+		// 定時ボタン押下時に出勤「09:00」/退勤「18:00」を追加する
+		function regularTime(indexNo){
+			const startTimeHour = document.getElementsByName(`attendanceList[${indexNo}].trainingStartTimeHour`);
+			const startTimeMinute = document.getElementsByName(`attendanceList[${indexNo}].trainingStartTimeMinute`);
+			const endTimeHour = document.getElementsByName(`attendanceList[${indexNo}].trainingEndTimeHour`);
+			const endTimeMinute = document.getElementsByName(`attendanceList[${indexNo}].trainingEndTimeMinute`);
+
+			// nullが配列「0」に存在する都合上、合わせたい数値+1の配列を指定する。
+			startTimeHour[0].options[10].selected = true;
+			startTimeMinute[0].options[1].selected = true;
+			endTimeHour[0].options[19].selected = true;
+			endTimeMinute[0].options[1].selected = true;
+		}
+		/*]]>*/
+	</script>
 
 </body>
 </html>
