@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import jp.co.sss.lms.dto.AttendanceManagementDto;
 import jp.co.sss.lms.dto.LoginUserDto;
@@ -427,4 +428,73 @@ public class StudentAttendanceService {
 			}
 		}
 	}
+	
+	
+	/**
+	 * AttendanceFormのフィールド値をチェックし、BindingResultにaddErrorする
+	 * 
+	 * @author 岩本 知寛 – Task.27
+	 * @param attendanceForm 出退勤フォーム
+	 * @param BindingResult 既存ライブラリのバリデーションチェック
+	 */
+	public void updateInputCheck(AttendanceForm attendanceForm, BindingResult result){
+		
+		
+//		for (DailyAttendanceForm dailyAttendanceForm: attendanceForm.getAttendanceList()) {
+		
+		List<DailyAttendanceForm> dailyAttendanceForm = attendanceForm.getAttendanceList();
+		for(int i = 0; i < dailyAttendanceForm.size(); i++) {
+			
+//			if (dailyAttendanceForm.) {}
+//			result.addError(new FieldError(
+//			result.getObjectName(),//オブジェクト名 定型記述
+//			"attendanceList[" + i + "].note", //フィールド名 noteフィールド
+//			messageUtil.getMessage(Constants.VALID_KEY_MAXLENGTH, new String[] { "備考", "100" })//エラーメッセージの組み立て
+//			));
+//		
+		
+//	# 概要 勤怠更新時の入力チェックを行う（文字数、時刻の整合性、中抜け時間の妥当性）。
+//
+//	# 処理
+//	[loop] DailyAttendanceForm ごとにチェックを実施。 
+//	    * 備考の文字数チェック（100文字以内）。 
+//	    * 時刻の「時」だけ、「分」だけといった片側未入力チェック。 
+//	    * 「出勤なし、退勤あり」の矛盾チェック。  
+//	    * [if エラーがなければ] 出勤時刻 ＞ 退勤時刻 になっていないか比較チェック。
+//	    * [if 中抜け時間が入力されている場合] 出退勤の差分から計算される最大受講時間よりも中抜け時間が長くないかチェック。
+//	[loop end]
+
+
+//		Ⅱ．入力パラメータ．勤怠リスト[n]の件数分、下記チェックを行う
+//		  ａ．入力パラメータ．勤怠リスト[n]．備考の文字数　＞　100　の場合、下記エラーメッセージを追加設定
+//		      パラメータ    "備考"
+//		      パラメータ    "100"
+//		   ｂ．入力パラメータ．勤怠リスト[n]．出勤時間（時）、出勤時間（分）の一方が入力有り　＆　もう一方が入力なしの場合、
+//		     下記エラーメッセージを追加設定
+//		      メッセージID  input.invalid
+//		      パラメータ    出勤時間
+//		   ｃ．入力パラメータ．勤怠リスト[n]．退勤時間（時）、退勤時間（分）の一方が入力有り　＆　もう一方が入力なしの場合、
+//		     下記エラーメッセージを追加設定														
+//		      メッセージID  input.invalid
+//		      パラメータ    退勤時間
+//		   ｄ．入力パラメータ．勤怠リスト[n]．出勤時間に入力なし　＆　退勤時間に入力あり　の場合、
+//		     下記エラーメッセージを追加設定
+//		      メッセージID  attendance.punchInEmpty
+//		      パラメータ    なし
+//		   ｅ．入力パラメータ．勤怠リスト[n]．出勤時間　＞　退勤時間　の場合、下記エラーメッセージを追加設定
+//		      メッセージID  attendance.trainingTimeRange
+//		      パラメータ    n ※該当の勤怠リスト[n]のnの部分
+//		   ｆ．入力パラメータ．勤怠リスト[n]．中抜け時間が勤務時間（出勤時間～退勤時間までの時間）を超える場合、
+//		      メッセージID  attendance.blankTimeError
+//		      パラメータ    なし
+//		      
+
+
+
+		}
+		
+	}
+	
+
+	
 }

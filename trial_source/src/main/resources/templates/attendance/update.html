@@ -104,7 +104,8 @@
 					<th:block th:if="${session.loginUserDto.role != '0001'}">
 						<input type="submit" value="戻る" name="indexCompany" class="btn btn-default" />
 					</th:block>
-					<input type="submit" value="更新" name="complete" class="btn btn-info" />
+					<!-- 岩本知寛 - Task.27-->
+					<input type="submit" value="更新" name="complete" class="btn btn-info" onclick="return registCheck();" />
 				</div>
 
 			</form>
@@ -114,6 +115,7 @@
 	<script th:inline="javascript">
 		/*<![CDATA[*/
 		
+		// 岩本知寛 - Task.28
 		// 定時ボタン押下時に出勤「09:00」/退勤「18:00」を追加する
 		function regularTime(indexNo){
 			const startTimeHour = document.getElementsByName(`attendanceList[${indexNo}].trainingStartTimeHour`);
@@ -127,6 +129,18 @@
 			endTimeHour[0].options[19].selected = true;
 			endTimeMinute[0].options[1].selected = true;
 		}
+		
+		
+		// 岩本知寛 - Task.27
+		// 更新ボタン押下時のメッセージ出力処理
+		function registCheck() {
+			if (confirm("更新します。よろしいですか？")) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+		
 		/*]]>*/
 	</script>
 
