@@ -150,16 +150,10 @@ public class AttendanceController {
 		// 岩本知寛 - Task.27
 		// 勤怠入力チェックを実施し、エラーの場合は勤怠情報直接変更画面を再表示。
 		studentAttendanceService.updateInputCheck(attendanceForm, result);
-		
 		if (result.hasErrors()) {
-//			Ⅲ．Ⅱでエラーメッセージが設定されていた場合、下記内容を設定し勤怠情報直接変更画面へ遷移
-//			  勤怠FORM．中抜け時間（選択肢）＝ 勤怠Utilを使用して選択肢用の中抜け時間マップを取得
-//			  勤怠FORM．時間マップ（選択肢）＝ 勤怠Utilを使用して選択肢用の時間マップを取得
-//			  勤怠FORM．分マップ（選択肢）  ＝ 勤怠Utilを使用して選択肢用の分マップを取得
 			attendanceForm.setBlankTimes(attendanceUtil.setBlankTime());
 			attendanceForm.setHourMap(attendanceUtil.getHourMap());
 			attendanceForm.setMinuteMap(attendanceUtil.getMinuteMap());
-			model.addAttribute("attendanceForm", attendanceForm);
 			return "attendance/update";
 		}
 		
