@@ -169,8 +169,8 @@ public class AttendanceUtil {
 	 * @param  timeString  開始時刻or終了時刻
 	 * @return 出退勤時間(時間)
 	 */
-	public Integer getHour(String timeString){
-		return Integer.parseInt(timeString.substring(0, 2));
+	public Integer getHour(String trainingTime){
+		return Integer.parseInt(trainingTime.substring(0, 2));
 	}
 	
 	/**
@@ -182,6 +182,34 @@ public class AttendanceUtil {
 	 */
 	public Integer getMinute(String timeString){
 		return Integer.parseInt(timeString.substring(3, 5));
+	}
+	
+	/**
+	 * 受講時間数を算出
+	 * 
+	 * @author 岩本 知寛 – Task.27
+	 * @param  trainingStartTime 開始時刻
+	 * @param  trainingEndTime   終了時刻
+	 * @return 受講合計時間数
+	 */
+	public TrainingTime calcJukoTime(
+			TrainingTime trainingStartTime
+			,TrainingTime trainingEndTime){
+		
+		// 終了時刻から開始時刻を引いた値を返す
+		return trainingEndTime.subtract(trainingStartTime);
+	}
+	
+	/**
+	 * 中抜け時間(文字列)を数字に変換
+	 * 
+	 * @author 岩本 知寛 – Task.27
+	 * @param  time 中抜け時間
+	 * @return 予想される最大中抜け時間(分)
+	 */
+	public Integer reverseBlankTime(String time){
+		int ONE_HOUR_IN_MINUTES = 60;
+		return getHour(time) * ONE_HOUR_IN_MINUTES + getMinute(time);
 	}
 	
 	/**
