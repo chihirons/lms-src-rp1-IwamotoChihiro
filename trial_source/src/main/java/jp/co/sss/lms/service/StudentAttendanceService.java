@@ -518,36 +518,35 @@ public class StudentAttendanceService {
 				continue;
 			}
 			
-			// 出退勤の入力があれば TrainingTimeインスタンスを作成しチェック処理に入る
-			if(!(attendance.getTrainingStartTime() == "") 
-					&& !(attendance.getTrainingEndTime() == "")
+			if(attendance.getTrainingStartTime() != null 
+					&& attendance.getTrainingEndTime() != null
 					&& trainingTime.isValidTrainingTime(attendance.getTrainingStartTime())
 					&& trainingTime.isValidTrainingTime(attendance.getTrainingEndTime())) {
 				
-				TrainingTime startTime = new TrainingTime(attendance.getTrainingStartTime());
-				TrainingTime endTime = new TrainingTime(attendance.getTrainingEndTime());
-				
-				// 出勤時間が退勤時間より未来の時間の場合
-				if(startTime.compareTo(endTime)> 0) {
-					result.addError(
-							new FieldError(
-								result.getObjectName(),
-								"attendanceList[" + i + "].trainingStartTimeHour", 
-								messageUtil.getMessage(Constants.VALID_KEY_ATTENDANCE_TRAININGTIMERANGE, new String[] { Integer.toString(i) })));
-					result.addError(
-							new FieldError(
-								result.getObjectName(),
-								"attendanceList[" + i + "].trainingStartTimeMinute", 
-								messageUtil.getMessage(Constants.VALID_KEY_ATTENDANCE_TRAININGTIMERANGE, new String[] { Integer.toString(i) })));
+					TrainingTime startTime = new TrainingTime(attendance.getTrainingStartTime());
+					TrainingTime endTime = new TrainingTime(attendance.getTrainingEndTime());
 					
-					// 退勤時間が出勤時間よりも過去の場合、後続処理の「attendanceUtil.calcJukoTime」で
-					// エラーがthrowされてしまうため問題を予防する観点で制御を入れる。
-					i++;
-					continue;
-				}
-				
-				// 勤務時間(出退勤間の作業時間)が中抜け時間を超過する場合
-				if(attendance.getBlankTime() != null) {
+					// 出勤時間が退勤時間より未来の時間の場合
+					if(startTime.compareTo(endTime)> 0) {
+						result.addError(
+								new FieldError(
+									result.getObjectName(),
+									"attendanceList[" + i + "].trainingStartTimeHour", 
+									messageUtil.getMessage(Constants.VALID_KEY_ATTENDANCE_TRAININGTIMERANGE, new String[] { Integer.toString(i) })));
+						result.addError(
+								new FieldError(
+									result.getObjectName(),
+									"attendanceList[" + i + "].trainingStartTimeMinute", 
+									messageUtil.getMessage(Constants.VALID_KEY_ATTENDANCE_TRAININGTIMERANGE, new String[] { Integer.toString(i) })));
+						
+						// 退勤時間が出勤時間よりも過去の場合、後続処理の「attendanceUtil.calcJukoTime」で
+						// エラーがthrowされてしまうため問題を予防する観点で制御を入れる。
+						i++;
+						continue;
+					}
+					
+					// 勤務時間(出退勤間の作業時間)が中抜け時間を超過する場合
+					if(attendance.getBlankTime() != null) {
 						TrainingTime lessonDuration =  attendanceUtil.calcJukoTime(startTime, endTime);
 						Integer blankTime = attendanceUtil.reverseBlankTime(lessonDuration.toString());
 						
@@ -557,7 +556,6 @@ public class StudentAttendanceService {
 								messageUtil.getMessage(Constants.VALID_KEY_ATTENDANCE_BLANKTIMEERROR)));
 						}
 					}
-					
 			}
 			// 出勤リスト(AttendanceList)の参照列番号をインクリメント
 			i++;
